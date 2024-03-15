@@ -14,7 +14,7 @@ const useMyNfts = () => {
         () => [...Array.from({ length: 30 })].map((_, index) => index),
         []
     );
-    const handleEvent = useTransferEvent();
+    const tokenId = useTransferEvent();
 
     useEffect(() => {
         (async () => {
@@ -60,7 +60,7 @@ const useMyNfts = () => {
             setIdToAddress(() => ownerAddressByIds)
             setData(ownedTokenIds);
         })();
-    }, [address, tokenIDs]);
+    }, [address, tokenId, tokenIDs]);
 
     return { data, idToAddress };
 };
