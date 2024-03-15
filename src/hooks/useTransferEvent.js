@@ -13,8 +13,8 @@ const useTransferEvent = () => {
         address: import.meta.env.VITE_contract_address,
         topics: [
             ethers.id("Transfer(address,address,uint256)"),
-            [address],
-            [address]
+            address,
+            address,
         ],
     };
 
