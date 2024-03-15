@@ -18,8 +18,7 @@ const useMintNft = () => {
                 id,
                 { value: ethers.parseEther("0.01") }
             )
-            const receipt = await tx.wait()
-            console.log(receipt)
+            await tx.wait()
             toast.dismiss(toastId)
             toast.success("Nft minted successfully")
         } catch (error) {

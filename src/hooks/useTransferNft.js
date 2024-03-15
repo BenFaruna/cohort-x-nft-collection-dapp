@@ -16,8 +16,7 @@ const useTransferNft = () => {
                 receiverAddress,
                 id
             )
-            const receipt = await tx.wait()
-            console.log(receipt)
+            await tx.wait()
             toast.dismiss(toastId)
             toast.success("Nft transferred successfully")
         } catch (error) {

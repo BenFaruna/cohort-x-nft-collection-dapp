@@ -1,10 +1,13 @@
+import "@radix-ui/themes/styles.css";
 import { Box, Button, Container, Flex, Link, Text } from "@radix-ui/themes";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+
 import { configureWeb3Modal } from "./connection";
-import "@radix-ui/themes/styles.css";
+
 import Header from "./component/Header";
 import AppTabs from "./component/AppTabs";
 import TransferModal from "./component/TansferModal";
+
 import useCollections from "./hooks/useCollections";
 import useMyNfts from "./hooks/useMyNfts";
 import useMintNft from "./hooks/useMintNft";
@@ -75,7 +78,7 @@ function App() {
                                             Description: {x.description}
                                         </Text>
                                         {
-                                            isConnected && idToAddress[index] === undefined ?
+                                            !isConnected ? null : idToAddress[index] === undefined ?
                                                 <Button
                                                     onClick={async () => { mintNft(x.edition) }}
                                                     className="px-8 py-2 text-xl mt-2" >

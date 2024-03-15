@@ -4,6 +4,7 @@ import multicallAbi from "../constants/multicall.json";
 import { readOnlyProvider } from "../constants/providers";
 import { useEffect, useMemo, useState } from "react";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import useTransferEvent from "./useTransferEvent";
 
 const useMyNfts = () => {
     const { address } = useWeb3ModalAccount();
@@ -13,6 +14,7 @@ const useMyNfts = () => {
         () => [...Array.from({ length: 30 })].map((_, index) => index),
         []
     );
+    const handleEvent = useTransferEvent();
 
     useEffect(() => {
         (async () => {
