@@ -8,6 +8,7 @@ import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 const useMyNfts = () => {
     const { address } = useWeb3ModalAccount();
     const [data, setData] = useState([]);
+    const [idToAddress, setIdToAddress] = useState({});
     const tokenIDs = useMemo(
         () => [...Array.from({ length: 30 })].map((_, index) => index),
         []
@@ -46,19 +47,20 @@ const useMyNfts = () => {
             );
 
             const ownedTokenIds = [];
-
+            const ownerAddressByIds = {}
             decodedResponses.forEach((addr, index) => {
+                ownerAddressByIds[validResponsesIndex[index]] = addr.toString();
                 if (
                     String(addr).toLowerCase() === String(address).toLowerCase()
                 )
                     ownedTokenIds.push(validResponsesIndex[index]);
             });
-
+            setIdToAddress(() => ownerAddressByIds)
             setData(ownedTokenIds);
         })();
     }, [address, tokenIDs]);
 
-    return data;
+    return { data, idToAddress };
 };
 
 export default useMyNfts;

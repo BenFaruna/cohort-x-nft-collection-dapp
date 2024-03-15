@@ -14,7 +14,7 @@ configureWeb3Modal();
 function App() {
     const { isConnected } = useWeb3ModalAccount()
     const tokensData = useCollections();
-    const myTokenIds = useMyNfts();
+    const { data: myTokenIds, idToAddress } = useMyNfts();
     const mintNft = useMintNft();
 
     const myTokensData = tokensData.filter((x, index) =>
@@ -61,7 +61,7 @@ function App() {
                             {tokensData.length === 0 ? (
                                 <Text>Loading...</Text>
                             ) : (
-                                tokensData.map((x) => (
+                                tokensData.map((x, index) => (
                                     <Box key={x.dna} className="w-[20rem]">
                                         <img
                                             src={x.image}
@@ -75,12 +75,22 @@ function App() {
                                             Description: {x.description}
                                         </Text>
                                         {
-                                            isConnected &&
-                                            <Button
-                                                onClick={async () => { mintNft(x.edition) }}
-                                                className="px-8 py-2 text-xl mt-2" >
-                                                Mint
-                                            </Button>
+                                            isConnected && idToAddress[index] === undefined ?
+                                                <Button
+                                                    onClick={async () => { mintNft(x.edition) }}
+                                                    className="px-8 py-2 text-xl mt-2" >
+                                                    Mint
+                                                </Button> :
+                                                <Flex justify={"center"} gap={"2"}>
+                                                    <Text>
+                                                        {idToAddress[index].slice(0, 8)}...
+                                                    </Text>
+                                                    <Link
+                                                        target="_blank"
+                                                        href={import.meta.env.VITE_opensea_url + index}
+                                                    >Show on OpenSea</Link>
+                                                </Flex>
+
                                         }
                                     </Box>
                                 ))
