@@ -1,16 +1,21 @@
-import { Box, Button, Container, Flex, Text } from "@radix-ui/themes";
+import { Box, Button, Container, Flex, Link, Text } from "@radix-ui/themes";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { configureWeb3Modal } from "./connection";
 import "@radix-ui/themes/styles.css";
 import Header from "./component/Header";
 import AppTabs from "./component/AppTabs";
+import TransferModal from "./component/TansferModal";
 import useCollections from "./hooks/useCollections";
 import useMyNfts from "./hooks/useMyNfts";
+import useMintNft from "./hooks/useMintNft";
 
 configureWeb3Modal();
 
 function App() {
+    const { isConnected } = useWeb3ModalAccount()
     const tokensData = useCollections();
     const myTokenIds = useMyNfts();
+    const mintNft = useMintNft();
 
     const myTokensData = tokensData.filter((x, index) =>
         myTokenIds.includes(index)
@@ -38,9 +43,14 @@ function App() {
                                         <Text className="block">
                                             Description: {x.description}
                                         </Text>
-                                        <Button className="px-8 py-2 text-xl mt-2">
-                                            Mint
-                                        </Button>
+                                        <Link
+                                            target="_blank"
+                                            className="px-8 py-2 text-xl m-2"
+                                            href={import.meta.env.VITE_opensea_url + x.edition}
+                                        >
+                                            Show on Opensea
+                                        </Link>
+                                        <TransferModal id={x.edition} />
                                     </Box>
                                 ))
                             )}
@@ -64,9 +74,14 @@ function App() {
                                         <Text className="block">
                                             Description: {x.description}
                                         </Text>
-                                        <Button className="px-8 py-2 text-xl mt-2">
-                                            Mint
-                                        </Button>
+                                        {
+                                            isConnected &&
+                                            <Button
+                                                onClick={async () => { mintNft(x.edition) }}
+                                                className="px-8 py-2 text-xl mt-2" >
+                                                Mint
+                                            </Button>
+                                        }
                                     </Box>
                                 ))
                             )}
@@ -74,7 +89,7 @@ function App() {
                     }
                 />
             </main>
-        </Container>
+        </Container >
     );
 }
 
